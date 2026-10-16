@@ -1,4 +1,5 @@
 import { ImportForm } from "@/components/import-form";
+import { WeeklyReviewCard } from "@/components/weekly-review";
 import { Card, buttonClass, inputClass } from "@/components/ui";
 import { destructiveAction, saveSettings } from "@/server/actions";
 import { exportData, getPrefs, listRevisions } from "@/lib/store";
@@ -19,6 +20,12 @@ export default async function ProfilePage() {
       <Card>
         <h2 className="font-semibold">AI usage</h2>
         <p className="mt-1 text-sm text-muted">{usage.today} Gemini requests today, {usage.total} in total. Each request can use paid quota. Output is capped by GEMINI_MAX_OUTPUT_TOKENS. A quota error is not retried.</p>
+      </Card>
+      <Card>
+        <h2 className="font-semibold">Weekly AI review</h2>
+        <div className="mt-3">
+          <WeeklyReviewCard />
+        </div>
       </Card>
       <Card>
         <h2 className="font-semibold">Settings</h2>

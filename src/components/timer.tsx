@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { elapsedSeconds, remainingSeconds, type SessionClock } from "@/lib/domain/study";
-import { startOrUpdateSession } from "@/server/actions";
+import { sessionCheckAction, sessionRecapAction, startOrUpdateSession } from "@/server/actions";
 import { buttonClass, inputClass } from "@/components/ui";
 
 function format(seconds: number) {
@@ -30,6 +31,13 @@ export function StudyTimer({
   );
   const [now, setNow] = useState(() => new Date());
   const [confirmFinish, setConfirmFinish] = useState(false);
+  const [check, setCheck] = useState<{ question: string; hint: string } | null>(null);
+  const [checkError, setCheckError] = useState("");
+  const [checkPending, setCheckPending] = useState(false);
+  const [recapNoteId, setRecapNoteId] = useState<string | null>(null);
+  const [recapError, setRecapError] = useState("");
+  const [coachEnabled, setCoachEnabled] = useState(true);
+  const lastCheckStage = useRef(0);
   const elapsed = elapsedSeconds(clock, now);
   const remaining = remainingSeconds(initial?.plannedSeconds ?? planned, elapsed);
 
@@ -47,6 +55,18 @@ export function StudyTimer({
 
   const stage = Math.floor(elapsed / (25 * 60));
 
+  useEffect(() => {
+    if (!coachEnabled || clock.status !== "running" || stage < 1 || stage === lastCheckStage.current) return;
+    lastCheckStage.current = stage;
+    setCheckPending(true);
+    setCheckError("");
+    void sessionCheckAction(dayId).then((result) => {
+      setCheckPending(false);
+      if (!result.ok) setCheckError(result.error);
+      else setCheck(result.check);
+    });
+  }, [stage, clock.status, coachEnabled, dayId]);
+
   async function submit(intent: string) {
     const data = new FormData();
     data.set("dayId", dayId);
@@ -61,6 +81,11 @@ export function StudyTimer({
     }
     if (intent === "finish") setClock({ status: "finished", elapsedSeconds: elapsedSeconds(clock, snapshot), lastResumedAt: null });
     await startOrUpdateSession(data);
+    if (intent === "finish" && coachEnabled) {
+      const recap = await sessionRecapAction(dayId, notes);
+      if (!recap.ok) setRecapError(recap.error);
+      else setRecapNoteId(recap.noteId);
+    }
   }
 
   return (
@@ -71,7 +96,21 @@ export function StudyTimer({
         {format(remaining)}
       </p>
       <p className="text-sm text-muted">Time studied: {format(elapsed)}. A running session counts wall-clock time until you pause it.</p>
-      {breaks && stage > 0 ? <p className="rounded-[14px] border-2 border-line bg-yellow px-3 py-2 text-sm font-medium">Break reminder: stand up for a minute, then continue.</p> : null}
+      {breaks && stage > 0 ? <p className="rounded-[14px] border-2 border-line bg-yellow px-3 py-2 text-sm font-medium text-[#111111]">Break reminder: stand up for a minute, then continue.</p> : null}
+      <label className="flex min-h-11 items-center gap-2 text-sm">
+        <input type="checkbox" checked={coachEnabled} onChange={(event) => setCoachEnabled(event.target.checked)} />
+        AI session coach (mid-session check + end recap)
+      </label>
+      {checkPending ? <p className="text-sm text-muted">Fetching a mid-session check…</p> : null}
+      {check ? (
+        <div className="rounded-[20px] border-2 border-line p-3">
+          <p className="text-sm font-medium">Mid-session check</p>
+          <p className="mt-2 text-sm">{check.question}</p>
+          <p className="mt-2 text-xs text-muted">Hint: {check.hint}</p>
+          <button className={`${buttonClass("ghost")} mt-2`} type="button" onClick={() => setCheck(null)}>Dismiss</button>
+        </div>
+      ) : null}
+      {checkError ? <p className="text-sm text-red-800">{checkError}</p> : null}
       {!initial ? (
         <label className="grid gap-1 text-sm font-medium">
           Session length
@@ -107,7 +146,16 @@ export function StudyTimer({
             Finish
           </button>
         ) : (
-          <p className="text-sm">This session is saved.</p>
+          <div className="grid gap-1 text-sm">
+            <p>This session is saved.</p>
+            {recapNoteId ? (
+              <p>
+                AI recap saved.{" "}
+                <Link className="font-bold underline" href={`/notes/${recapNoteId}`}>Open note</Link>
+              </p>
+            ) : null}
+            {recapError ? <p className="text-red-800">{recapError}</p> : null}
+          </div>
         )}
       </div>
       {confirmFinish ? (

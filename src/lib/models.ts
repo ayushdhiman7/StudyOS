@@ -131,6 +131,18 @@ const revisionSchema = new Schema(
 
 const preferenceSchema = new Schema({ _id: String, data: Schema.Types.Mixed, updatedAt: String }, { versionKey: false });
 const usageSchema = new Schema({ _id: String, count: Number }, { versionKey: false });
+const aiCacheSchema = new Schema(
+  {
+    _id: String,
+    kind: String,
+    dayId: String,
+    expiresAt: String,
+    payload: Schema.Types.Mixed,
+    createdAt: String,
+    updatedAt: String,
+  },
+  { versionKey: false },
+);
 
 export const DayModel = collection("RoadmapDay", daySchema);
 export const CompletionModel = collection("Completion", completionSchema);
@@ -144,3 +156,4 @@ export const AttemptModel = collection("QuizAttempt", attemptSchema);
 export const RevisionModel = collection("RevisionItem", revisionSchema);
 export const PreferenceModel = collection("Preference", preferenceSchema);
 export const UsageModel = collection("AiUsage", usageSchema);
+export const AiCacheModel = collection("AiCache", aiCacheSchema);

@@ -99,9 +99,12 @@ export function greeting(now = new Date(), timeZone = APP_TIMEZONE): string {
       hourCycle: "h23",
     }).format(now),
   );
+  // Asia/Kolkata: late night is not "morning".
+  if (hour < 5) return "Good night";
   if (hour < 12) return "Good morning";
   if (hour < 17) return "Good afternoon";
-  return "Good evening";
+  if (hour < 22) return "Good evening";
+  return "Good night";
 }
 
 export function zonedTimeToUtc(isoDate: string, hhmm: string, timeZone = APP_TIMEZONE): Date {

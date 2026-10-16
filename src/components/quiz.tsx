@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { confirmQuizAction, generateQuizAction, gradeQuizAction } from "@/server/actions";
 import { buttonClass, inputClass } from "@/components/ui";
@@ -15,10 +16,14 @@ type Graded = {
 type Draft = { kind: "mcq" | "short" | "output" | "coding" | "system"; prompt: string; choices: string[]; answer: string; explanation: string; topic: string };
 
 export function QuizRunner({ dayId, questions }: { dayId: string; questions: PublicQuestion[] }) {
+  const router = useRouter();
   const [startedAt] = useState(() => new Date().toISOString());
   const [result, setResult] = useState<Graded | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const [weakDrafts, setWeakDrafts] = useState<Draft[]>([]);
+  const [weakPending, setWeakPending] = useState(false);
+  const [weakSaved, setWeakSaved] = useState(false);
 
   async function onSubmit(formData: FormData) {
     const answers: Record<string, string> = {};
@@ -27,6 +32,7 @@ export function QuizRunner({ dayId, questions }: { dayId: string; questions: Pub
     setError("");
     try {
       setResult(await gradeQuizAction(dayId, answers, startedAt));
+      router.refresh();
     } catch {
       setError("The quiz could not be saved. Check your connection and retry.");
     } finally {
@@ -35,10 +41,16 @@ export function QuizRunner({ dayId, questions }: { dayId: string; questions: Pub
   }
 
   if (result) {
+    const showWeak = result.accuracy < 0.8 && result.weakTopics.length > 0;
     return (
       <div className="grid gap-3">
         <h2 className="text-xl font-semibold">Score {result.score}/{result.total}</h2>
-        <p className="text-sm text-muted">Accuracy {Math.round(result.accuracy * 100)}%. {result.weakTopics.length ? `Weak topics: ${result.weakTopics.join(", ")}.` : "No weak topics in this attempt."}</p>
+        <p className="text-sm text-muted">
+          Accuracy {Math.round(result.accuracy * 100)}%.{" "}
+          {result.weakTopics.length
+            ? `Weak topics: ${result.weakTopics.join(", ")}. Revision cards were scheduled for missed topics.`
+            : "No weak topics in this attempt."}
+        </p>
         {result.incorrect.map((item) => (
           <article key={item.id} className="rounded-2xl border border-line p-3">
             <p className="text-xs text-muted">{item.topic}</p>
@@ -48,6 +60,49 @@ export function QuizRunner({ dayId, questions }: { dayId: string; questions: Pub
             <p className="mt-1 text-sm text-muted">{item.explanation}</p>
           </article>
         ))}
+        {showWeak ? (
+          <div className="grid gap-2 rounded-[20px] border-2 border-line p-3">
+            <p className="text-sm font-medium">Practice weak topics with AI</p>
+            <button
+              className={buttonClass()}
+              type="button"
+              disabled={weakPending}
+              onClick={async () => {
+                setWeakPending(true);
+                setError("");
+                const generated = await generateQuizAction(dayId, result.weakTopics);
+                setWeakPending(false);
+                if (!generated.ok) setError(generated.error);
+                else setWeakDrafts(generated.questions);
+              }}
+            >
+              {weakPending ? "Generating…" : "Generate weak-topic quiz"}
+            </button>
+            {weakDrafts.length > 0 && !weakSaved ? (
+              <>
+                {weakDrafts.map((question) => (
+                  <article key={question.prompt} className="rounded-xl border border-line p-3 text-sm">
+                    <p className="text-xs text-muted">{question.topic}</p>
+                    <p className="mt-1 whitespace-pre-wrap">{question.prompt}</p>
+                  </article>
+                ))}
+                <button
+                  className={buttonClass("ghost")}
+                  type="button"
+                  onClick={async () => {
+                    await confirmQuizAction(dayId, weakDrafts);
+                    setWeakSaved(true);
+                    router.refresh();
+                  }}
+                >
+                  Save and reload quiz
+                </button>
+              </>
+            ) : null}
+            {weakSaved ? <p className="text-sm">Saved. Open the quiz again to practise the new questions.</p> : null}
+          </div>
+        ) : null}
+        {error ? <p role="alert" className="text-sm text-red-800">{error}</p> : null}
       </div>
     );
   }

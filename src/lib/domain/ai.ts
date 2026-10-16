@@ -98,6 +98,60 @@ export const aiNotesSchema = z.object({
   tags: z.array(z.string().min(1).max(40)).max(8).default([]),
 });
 
+export const aiBriefSchema = z.object({
+  focus: z.string().min(20).max(600),
+  reason: z.string().min(8).max(400),
+  cta: z.string().min(4).max(80),
+});
+
+export const aiWeeklyReviewSchema = z.object({
+  summary: z.string().min(20).max(1200),
+  weakTopics: z.array(z.string().min(1).max(80)).max(8).default([]),
+  catchUp: z
+    .array(
+      z.object({
+        dayId: z.string().min(1).max(80),
+        title: z.string().min(1).max(160),
+        why: z.string().min(4).max(200),
+      }),
+    )
+    .max(8)
+    .default([]),
+});
+
+export const aiInterviewScoreSchema = z.object({
+  score: z.number().min(0).max(5),
+  gaps: z.array(z.string().min(2).max(200)).max(5).default([]),
+  betterAnswer: z.string().min(20).max(4000),
+  nextPrompt: z.string().min(8).max(500).optional(),
+});
+
+export const aiSessionCheckSchema = z.object({
+  question: z.string().min(8).max(500),
+  hint: z.string().min(4).max(400),
+});
+
+export const aiSessionRecapSchema = z.object({
+  title: z.string().min(3).max(160),
+  bullets: z.array(z.string().min(4).max(300)).min(2).max(5),
+});
+
+export const aiInterviewPromptsSchema = z.object({
+  prompts: z.array(z.string().min(8).max(300)).min(3).max(5),
+});
+
+export const aiPracticeTaskSchema = z.object({
+  title: z.string().min(3).max(160),
+  task: z.string().min(20).max(4000),
+  acceptance: z.string().min(8).max(600),
+});
+
+export const aiExampleVariantSchema = z.object({
+  caption: z.string().min(4).max(200),
+  code: z.string().min(10).max(8000),
+  explanation: z.string().min(20).max(4000),
+});
+
 export function parseStructured<T>(schema: z.ZodType<T>, text: string): { ok: true; data: T } | { ok: false; error: string } {
   const start = text.indexOf("{");
   const end = text.lastIndexOf("}");

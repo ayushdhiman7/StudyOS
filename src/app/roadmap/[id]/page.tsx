@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AiNotesButton } from "@/components/ai-notes";
+import { DayAiExtras } from "@/components/day-ai-extras";
+import { ExampleAiTools, ExplainButton } from "@/components/explain-button";
 import { Card, buttonClass, inputClass } from "@/components/ui";
 import { formatLong, localToday, plannedMinutes } from "@/lib/domain/study";
 import { moveDayAction, savePersonalNotes, scheduleRevisionAction, skipDayAction, toggleItem } from "@/server/actions";
@@ -63,6 +65,7 @@ export default async function DayPage({ params }: { params: Promise<{ id: string
                       {item.title}
                     </button>
                   </form>
+                  <ExplainButton dayId={id} concept={item.title} />
                 </li>
               ))}
             </ul>
@@ -81,6 +84,7 @@ export default async function DayPage({ params }: { params: Promise<{ id: string
                   {item.title}
                 </button>
               </form>
+              <ExplainButton dayId={id} concept={item.title} />
             </li>
           ))}
         </ul>
@@ -90,11 +94,14 @@ export default async function DayPage({ params }: { params: Promise<{ id: string
           <h2 className="font-semibold">Example</h2>
           <p className="mt-1 text-xs text-muted">{detail.example.caption}</p>
           <pre className="mt-3 overflow-x-auto rounded-[14px] border-2 border-line bg-ink p-3 text-xs text-canvas"><code>{detail.example.code}</code></pre>
+          <ExampleAiTools dayId={id} code={detail.example.code} caption={detail.example.caption} />
         </Card>
       ) : null}
       <Card>
-        <h2 className="font-semibold">Interview prompts</h2>
-        <ul className="mt-2 list-disc space-y-2 pl-5 text-sm">{detail.interview.map((prompt) => <li key={prompt}>{prompt}</li>)}</ul>
+        <h2 className="font-semibold">Interview & practice AI</h2>
+        <div className="mt-3">
+          <DayAiExtras dayId={id} interview={detail.interview} interviewIsAi={detail.interviewIsAi} />
+        </div>
       </Card>
       <Card>
         <h2 className="font-semibold">Notes for this day</h2>

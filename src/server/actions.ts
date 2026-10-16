@@ -2,9 +2,25 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { conceptsOf, ROADMAP } from "@/lib/roadmap";
-import { buildTutorPrompt, parseStructured, responseStyles, splitFollowUps, aiNotesSchema, aiQuizSchema, type ResponseStyle } from "@/lib/domain/ai";
-import { finishClock, pauseClock, resumeClock, type Preferences } from "@/lib/domain/study";
+import { conceptsOf, interviewPrompts, ROADMAP } from "@/lib/roadmap";
+import {
+  aiBriefSchema,
+  aiExampleVariantSchema,
+  aiInterviewPromptsSchema,
+  aiInterviewScoreSchema,
+  aiNotesSchema,
+  aiPracticeTaskSchema,
+  aiQuizSchema,
+  aiSessionCheckSchema,
+  aiSessionRecapSchema,
+  aiWeeklyReviewSchema,
+  buildTutorPrompt,
+  parseStructured,
+  responseStyles,
+  splitFollowUps,
+  type ResponseStyle,
+} from "@/lib/domain/ai";
+import { finishClock, localToday, pauseClock, resumeClock, type Preferences } from "@/lib/domain/study";
 import { AiError, generateText } from "@/lib/gemini";
 import {
   addMessage,
@@ -14,6 +30,8 @@ import {
   deleteConversation,
   deleteNote,
   deleteMessage,
+  getAiCache,
+  getDashboard,
   getMessages,
   getNote,
   getPrefs,
@@ -23,12 +41,14 @@ import {
   moveDay,
   resetProgress,
   reviewRevision,
+  appendDayNotes,
   saveDayNotes,
   saveGeneratedQuestions,
   saveNote,
   savePrefs,
   saveSession,
   scheduleRevision,
+  setAiCache,
   setHelpful,
   setItemComplete,
   skipDay,
@@ -337,14 +357,18 @@ export async function saveAnswerNote(formData: FormData) {
   redirect(`/notes/${id}`);
 }
 
-export async function generateQuizAction(dayId: string) {
+export async function generateQuizAction(dayId: string, weakTopics: string[] = []) {
   const day = ROADMAP.find((item) => item.id === dayId);
   if (!day) return { ok: false as const, error: "That day is not in the plan.", questions: [] };
+  const focus = weakTopics.filter(Boolean).slice(0, 6);
+  const topicLine = focus.length
+    ? `Focus ONLY on these weak topics: ${focus.join("; ")}. Write 4 questions that drill these gaps.`
+    : "Use only this day's topics. 4 questions.";
   const prompt = buildTutorPrompt({
     style: "quiz",
     day: { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) },
     history: [],
-    userText: "Return JSON only: {\"questions\":[{\"kind\":\"mcq\",\"prompt\":\"...\",\"choices\":[\"a\",\"b\",\"c\",\"d\"],\"answer\":\"a\",\"explanation\":\"...\",\"topic\":\"...\"}]}. Use only this day's topics. 4 questions.",
+    userText: `Return JSON only: {"questions":[{"kind":"mcq","prompt":"...","choices":["a","b","c","d"],"answer":"a","explanation":"...","topic":"..."}]}. ${topicLine}`,
   });
   try {
     const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "quiz" });
@@ -387,4 +411,322 @@ export async function confirmNotesAction(dayId: string, note: { title: string; b
   const id = await saveNote({ ...note, dayId, pinned: false, forRevision: true });
   revalidatePath("/notes");
   return id;
+}
+
+export async function explainConceptAction(dayId: string, concept: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  const topic = concept.trim().slice(0, 500);
+  if (!topic) return { ok: false as const, error: "Nothing to explain.", text: "" };
+  const prompt = buildTutorPrompt({
+    style: "beginner",
+    day: day
+      ? { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) }
+      : null,
+    history: [],
+    userText: `Explain this checklist item or concept in plain language with one short example:\n${topic}`,
+  });
+  try {
+    const raw = await generateText({ system: prompt.system, contents: prompt.contents, key: "explain-ui" });
+    const split = splitFollowUps(raw);
+    return { ok: true as const, error: "", text: split.answer };
+  } catch (error) {
+    return { ok: false as const, error: error instanceof AiError ? error.message : "Explain failed.", text: "" };
+  }
+}
+
+export async function getDailyBriefAction() {
+  const today = localToday();
+  const cacheId = `brief:${today}`;
+  const cached = await getAiCache<{ focus: string; reason: string; cta: string; dayId: string | null }>(cacheId);
+  if (cached) return { ok: true as const, error: "", brief: cached, cached: true };
+  const data = await getDashboard();
+  const focus = data.todayView ?? data.nextView;
+  if (!focus) {
+    return {
+      ok: true as const,
+      error: "",
+      brief: {
+        focus: "No study day is scheduled right now. Open the roadmap when you are ready.",
+        reason: "The 30-day plan is outside today.",
+        cta: "Open roadmap",
+        dayId: null as string | null,
+      },
+      cached: false,
+    };
+  }
+  const streakDays = data.streak.current;
+  const fallback = {
+    focus: `Focus on ${focus.day.title}. Finish the checklist and one practice item.`,
+    reason: data.weakTopics.length
+      ? `Recent weak topics: ${data.weakTopics.slice(0, 3).join(", ")}.`
+      : `Streak ${streakDays} day${streakDays === 1 ? "" : "s"}.`,
+    cta: "Ask AI about today",
+    dayId: focus.day.id,
+  };
+  const prompt = buildTutorPrompt({
+    style: "revision",
+    day: {
+      date: focus.day.date,
+      title: focus.day.title,
+      objective: focus.day.doneWhen,
+      concepts: conceptsOf(focus.day),
+    },
+    history: [],
+    userText: `Return JSON only: {"focus":"...","reason":"...","cta":"..."}. focus is one short paragraph (max 2 sentences) for today's study. reason mentions streak ${streakDays} and weak topics [${data.weakTopics.join(", ")}] if any. cta is a short button label.`,
+  });
+  try {
+    const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "brief" });
+    const parsed = parseStructured(aiBriefSchema, text);
+    if (!parsed.ok) {
+      await setAiCache(cacheId, "brief", fallback, 24, focus.day.id);
+      return { ok: true as const, error: "", brief: fallback, cached: false };
+    }
+    const brief = { ...parsed.data, dayId: focus.day.id };
+    await setAiCache(cacheId, "brief", brief, 24, focus.day.id);
+    return { ok: true as const, error: "", brief, cached: false };
+  } catch {
+    await setAiCache(cacheId, "brief", fallback, 6, focus.day.id);
+    return { ok: true as const, error: "", brief: fallback, cached: false };
+  }
+}
+
+export async function startMockInterviewAction(dayId: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  if (!day) return { ok: false as const, error: "That day is not in the plan.", conversationId: "", prompt: "" };
+  const prompts = interviewPrompts(day);
+  const first = prompts[0] ?? `Explain ${day.title} as in a junior interview.`;
+  const conversationId = await createConversation({
+    title: `Mock interview · ${day.title}`.slice(0, 80),
+    dayId,
+    style: "interview",
+  });
+  await addMessage({
+    conversationId,
+    role: "assistant",
+    content: `Mock interview for ${day.title}.\n\nQuestion 1: ${first}`,
+  });
+  revalidatePath("/tutor");
+  return { ok: true as const, error: "", conversationId, prompt: first };
+}
+
+export async function scoreMockAnswerAction(conversationId: string, dayId: string, answer: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  if (!day) return { ok: false as const, error: "That day is not in the plan.", feedback: null };
+  const text = answer.trim();
+  if (!text) return { ok: false as const, error: "Write an answer first.", feedback: null };
+  const history = await getMessages(conversationId);
+  const lastAssistant = [...history].reverse().find((message) => message.role === "assistant");
+  const promptAsked = lastAssistant?.content ?? interviewPrompts(day)[0] ?? day.title;
+  await addMessage({ conversationId, role: "user", content: text });
+  const remaining = interviewPrompts(day).filter((item) => !history.some((message) => message.content.includes(item)));
+  const prompt = buildTutorPrompt({
+    style: "interview",
+    day: { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) },
+    history: [],
+    userText: `Score this interview answer. Question was:\n${promptAsked}\n\nCandidate answer:\n${text}\n\nReturn JSON only: {"score":0-5,"gaps":["..."],"betterAnswer":"...","nextPrompt":"optional next question"}. Prefer nextPrompt from: ${remaining.slice(0, 3).join(" | ") || "a related follow-up"}.`,
+  });
+  try {
+    const raw = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "mock" });
+    const parsed = parseStructured(aiInterviewScoreSchema, raw);
+    if (!parsed.ok) return { ok: false as const, error: parsed.error, feedback: null };
+    const next = parsed.data.nextPrompt?.trim();
+    const content = [
+      `Score: ${parsed.data.score}/5`,
+      parsed.data.gaps.length ? `Gaps:\n${parsed.data.gaps.map((gap) => `- ${gap}`).join("\n")}` : "Gaps: none major.",
+      "",
+      "Stronger answer:",
+      parsed.data.betterAnswer,
+      next ? `\nNext question: ${next}` : "\nThat wraps this mock round.",
+    ].join("\n");
+    await addMessage({ conversationId, role: "assistant", content });
+    revalidatePath("/tutor");
+    return { ok: true as const, error: "", feedback: parsed.data };
+  } catch (error) {
+    return { ok: false as const, error: error instanceof AiError ? error.message : "Scoring failed.", feedback: null };
+  }
+}
+
+export async function sessionCheckAction(dayId: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  if (!day) return { ok: false as const, error: "Unknown day.", check: null };
+  const prompt = buildTutorPrompt({
+    style: "quiz",
+    day: { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) },
+    history: [],
+    userText: 'Return JSON only: {"question":"...","hint":"..."}. One short check question for a mid-session pause. Hint only, not the full answer.',
+  });
+  try {
+    const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "session-check" });
+    const parsed = parseStructured(aiSessionCheckSchema, text);
+    if (!parsed.ok) return { ok: false as const, error: parsed.error, check: null };
+    return { ok: true as const, error: "", check: parsed.data };
+  } catch (error) {
+    return { ok: false as const, error: error instanceof AiError ? error.message : "Check failed.", check: null };
+  }
+}
+
+export async function sessionRecapAction(dayId: string, notes: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  if (!day) return { ok: false as const, error: "Unknown day.", noteId: null };
+  const prompt = buildTutorPrompt({
+    style: "revision",
+    day: { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) },
+    history: [],
+    userText: `Return JSON only: {"title":"...","bullets":["...","...","..."]}. 3 bullet recap of this study session. Session notes from the learner:\n${notes.slice(0, 2000) || "(none)"}`,
+  });
+  try {
+    const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "session-recap" });
+    const parsed = parseStructured(aiSessionRecapSchema, text);
+    if (!parsed.ok) return { ok: false as const, error: parsed.error, noteId: null };
+    const body = parsed.data.bullets.map((bullet) => `• ${bullet}`).join("\n");
+    const noteId = await saveNote({
+      title: parsed.data.title.slice(0, 200),
+      body,
+      dayId,
+      tags: ["session", "ai"],
+      pinned: false,
+      forRevision: true,
+    });
+    revalidatePath("/notes");
+    revalidatePath("/");
+    return { ok: true as const, error: "", noteId };
+  } catch (error) {
+    return { ok: false as const, error: error instanceof AiError ? error.message : "Recap failed.", noteId: null };
+  }
+}
+
+export async function getWeeklyReviewAction(force = false) {
+  const today = localToday();
+  const weekKey = today.slice(0, 8) + String(Math.ceil(Number(today.slice(8, 10)) / 7));
+  const cacheId = `weekly:${weekKey}`;
+  if (!force) {
+    const cached = await getAiCache<{ summary: string; weakTopics: string[]; catchUp: { dayId: string; title: string; why: string }[] }>(cacheId);
+    if (cached) return { ok: true as const, error: "", review: cached, cached: true };
+  }
+  const data = await getDashboard();
+  const missed = data.missed.slice(0, 6).map((view) => ({ id: view.day.id, title: view.day.title }));
+  const fallback = {
+    summary: `You have completed ${data.roadmap.done} of ${data.roadmap.total} days. Quiz accuracy ${data.quizAccuracy == null ? "n/a" : `${Math.round(data.quizAccuracy * 100)}%`}.`,
+    weakTopics: data.weakTopics.slice(0, 5),
+    catchUp: missed.map((item) => ({ dayId: item.id, title: item.title, why: "Missed or incomplete" })),
+  };
+  const prompt = buildTutorPrompt({
+    style: "revision",
+    day: null,
+    history: [],
+    userText: `Return JSON only: {"summary":"...","weakTopics":["..."],"catchUp":[{"dayId":"...","title":"...","why":"..."}]}. Progress: ${data.roadmap.done}/${data.roadmap.total}. Streak ${data.streak.current}. Weak topics: ${data.weakTopics.join(", ") || "none"}. Missed days: ${missed.map((item) => `${item.id}:${item.title}`).join("; ") || "none"}. Suggest catch-up order.`,
+  });
+  try {
+    const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "weekly" });
+    const parsed = parseStructured(aiWeeklyReviewSchema, text);
+    const review = parsed.ok ? parsed.data : fallback;
+    await setAiCache(cacheId, "weekly", review, 48);
+    return { ok: true as const, error: "", review, cached: false };
+  } catch {
+    await setAiCache(cacheId, "weekly", fallback, 12);
+    return { ok: true as const, error: "", review: fallback, cached: false };
+  }
+}
+
+export async function generateInterviewPromptsAction(dayId: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  if (!day) return { ok: false as const, error: "Unknown day.", prompts: [] as string[] };
+  const cacheId = `interview:${dayId}`;
+  const cached = await getAiCache<{ prompts: string[] }>(cacheId);
+  if (cached?.prompts?.length) return { ok: true as const, error: "", prompts: cached.prompts };
+  const fallback = interviewPrompts(day);
+  const prompt = buildTutorPrompt({
+    style: "interview",
+    day: { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) },
+    history: [],
+    userText: 'Return JSON only: {"prompts":["...","...","..."]}. 3 to 5 junior interview questions for this day.',
+  });
+  try {
+    const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "interview-prompts" });
+    const parsed = parseStructured(aiInterviewPromptsSchema, text);
+    const prompts = parsed.ok ? parsed.data.prompts : fallback;
+    await setAiCache(cacheId, "interview", { prompts }, 168, dayId);
+    return { ok: true as const, error: "", prompts };
+  } catch {
+    return { ok: true as const, error: "", prompts: fallback };
+  }
+}
+
+export async function confirmInterviewPromptsAction(dayId: string, prompts: string[]) {
+  await setAiCache(`interview:${dayId}`, "interview", { prompts }, 168, dayId);
+  revalidatePath(`/roadmap/${dayId}`);
+  return { ok: true as const };
+}
+
+export async function generatePracticeTaskAction(dayId: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  if (!day) return { ok: false as const, error: "Unknown day.", task: null };
+  const prompt = buildTutorPrompt({
+    style: "example",
+    day: { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) },
+    history: [],
+    userText: 'Return JSON only: {"title":"...","task":"...","acceptance":"..."}. One concrete coding practice task for today. task is the assignment; acceptance is how to know it is done.',
+  });
+  try {
+    const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "practice" });
+    const parsed = parseStructured(aiPracticeTaskSchema, text);
+    if (!parsed.ok) return { ok: false as const, error: parsed.error, task: null };
+    return { ok: true as const, error: "", task: parsed.data };
+  } catch (error) {
+    return { ok: false as const, error: error instanceof AiError ? error.message : "Practice task failed.", task: null };
+  }
+}
+
+export async function confirmPracticeTaskAction(dayId: string, task: { title: string; task: string; acceptance: string }) {
+  const body = `${task.task}\n\nDone when: ${task.acceptance}`;
+  const id = await saveNote({
+    title: task.title.slice(0, 200),
+    body,
+    dayId,
+    tags: ["practice", "ai"],
+    pinned: false,
+    forRevision: false,
+  });
+  await appendDayNotes(dayId, `Practice task (${task.title}):\n${body}`);
+  revalidatePath(`/roadmap/${dayId}`);
+  revalidatePath("/notes");
+  return id;
+}
+
+export async function explainExampleAction(dayId: string, code: string, caption: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  const prompt = buildTutorPrompt({
+    style: "example",
+    day: day
+      ? { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) }
+      : null,
+    history: [],
+    userText: `Explain this example line by line.\nCaption: ${caption}\nCode:\n${code.slice(0, 6000)}`,
+  });
+  try {
+    const raw = await generateText({ system: prompt.system, contents: prompt.contents, key: "example-explain" });
+    return { ok: true as const, error: "", text: splitFollowUps(raw).answer };
+  } catch (error) {
+    return { ok: false as const, error: error instanceof AiError ? error.message : "Explain failed.", text: "" };
+  }
+}
+
+export async function harderExampleAction(dayId: string, code: string, caption: string) {
+  const day = ROADMAP.find((item) => item.id === dayId);
+  const prompt = buildTutorPrompt({
+    style: "example",
+    day: day
+      ? { date: day.date, title: day.title, objective: day.doneWhen, concepts: conceptsOf(day) }
+      : null,
+    history: [],
+    userText: `Return JSON only: {"caption":"...","code":"...","explanation":"..."}. Show a harder TypeScript/JavaScript variant of this example without replacing the original.\nCaption: ${caption}\nCode:\n${code.slice(0, 4000)}`,
+  });
+  try {
+    const text = await generateText({ system: prompt.system, contents: prompt.contents, json: true, key: "example-harder" });
+    const parsed = parseStructured(aiExampleVariantSchema, text);
+    if (!parsed.ok) return { ok: false as const, error: parsed.error, variant: null };
+    return { ok: true as const, error: "", variant: parsed.data };
+  } catch (error) {
+    return { ok: false as const, error: error instanceof AiError ? error.message : "Variant failed.", variant: null };
+  }
 }

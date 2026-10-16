@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { connectDB } from "@/lib/db";
 import {
+  AiCacheModel,
   AttemptModel,
   CompletionModel,
   ConversationModel,
@@ -247,10 +248,12 @@ export async function getDayDetail(dayId: string, now = new Date()) {
   const view = dashboard.views.find((item) => item.day.id === dayId);
   if (!view) return null;
   const questions = await rows<QuizQuestion>(QuestionModel.find({ dayId, source: "seed" }).lean());
+  const cachedInterview = await getAiCache<{ prompts: string[] }>(`interview:${dayId}`);
   return {
     ...view,
     example: examples[dayId] ?? null,
-    interview: interviewPrompts(view.day),
+    interview: cachedInterview?.prompts?.length ? cachedInterview.prompts : interviewPrompts(view.day),
+    interviewIsAi: Boolean(cachedInterview?.prompts?.length),
     concepts: conceptsOf(view.day),
     questionCount: questions.length,
     prefs: dashboard.prefs,
@@ -295,6 +298,13 @@ export async function saveDayNotes(dayId: string, personalNotes: string) {
     { $set: { personalNotes: personalNotes.slice(0, 20_000), updatedAt: now } },
     { upsert: true },
   );
+}
+
+export async function appendDayNotes(dayId: string, addition: string) {
+  await ensureReady();
+  const doc = await DayStateModel.findById(dayId).lean<{ personalNotes?: string }>();
+  const merged = [doc?.personalNotes?.trim() ?? "", addition.trim()].filter(Boolean).join("\n\n").slice(0, 20_000);
+  await saveDayNotes(dayId, merged);
 }
 
 export async function skipDay(dayId: string) {
@@ -619,7 +629,58 @@ export async function gradeQuiz(dayId: string, answers: Record<string, string>, 
     answers,
     weakTopics: result.weakTopics,
   });
+  if (result.weakTopics.length > 0) {
+    await scheduleWeakTopicRevisions(dayId, result.weakTopics, localToday());
+  }
   return result;
+}
+
+/** Create pending revision cards for missed quiz topics (deduped per day + topic). */
+export async function scheduleWeakTopicRevisions(dayId: string, topics: string[], from: string) {
+  await ensureReady();
+  const prefs = await getPrefs();
+  const interval = prefs.revisionIntervals[0] ?? 1;
+  const existing = await rows<{ title: string }>(RevisionModel.find({ dayId, status: "pending" }).lean());
+  const seen = new Set(existing.map((item) => item.title.toLowerCase()));
+  for (const topic of topics.slice(0, 6)) {
+    const title = `Quiz: ${topic}`.slice(0, 200);
+    if (seen.has(title.toLowerCase())) continue;
+    seen.add(title.toLowerCase());
+    await scheduleRevision({ dayId, noteId: null, title, from, intervalDays: interval });
+  }
+}
+
+export async function getAiCache<T>(id: string): Promise<T | null> {
+  await ensureReady();
+  const doc = await AiCacheModel.findById(id).lean<{ expiresAt?: string; payload?: T }>();
+  if (!doc?.payload) return null;
+  if (doc.expiresAt && doc.expiresAt < new Date().toISOString()) return null;
+  return doc.payload;
+}
+
+export async function setAiCache(id: string, kind: string, payload: unknown, ttlHours: number, dayId: string | null = null) {
+  await ensureReady();
+  const now = new Date();
+  const expires = new Date(now.getTime() + ttlHours * 60 * 60 * 1000).toISOString();
+  await AiCacheModel.updateOne(
+    { _id: id },
+    {
+      $set: {
+        kind,
+        dayId,
+        payload,
+        expiresAt: expires,
+        updatedAt: now.toISOString(),
+        createdAt: now.toISOString(),
+      },
+    },
+    { upsert: true },
+  );
+}
+
+export async function clearAiCache(id: string) {
+  await ensureReady();
+  await AiCacheModel.deleteOne({ _id: id });
 }
 
 export async function saveGeneratedQuestions(dayId: string, questions: Omit<QuizQuestion, "id" | "dayId" | "source" | "keywords">[]) {

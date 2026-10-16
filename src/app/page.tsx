@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ListChecks, Sparkles, Timer } from "lucide-react";
+import { DailyBrief } from "@/components/daily-brief";
 import { ReminderHost } from "@/components/nav";
 import { Card, Empty, ProgressBar, buttonClass } from "@/components/ui";
 import { formatLong, plannedMinutes } from "@/lib/domain/study";
@@ -26,14 +27,7 @@ export default async function HomePage() {
         <header>
           <p className="text-sm text-muted">{formatLong(data.today)}</p>
           <h1 className="font-display mt-1 text-[32px] leading-[1.1] md:text-[44px]">
-            <span className="md:hidden">
-              {data.greeting},
-              <br />
-              Ayush
-            </span>
-            <span className="hidden md:inline">
-              {data.greeting}, Ayush
-            </span>
+            {data.greeting}, Ayush
           </h1>
         </header>
 
@@ -91,6 +85,8 @@ export default async function HomePage() {
         ) : (
           <Empty title="No study day is scheduled" body="The 30-day plan runs from 17 October to 15 November 2026." href="/roadmap" action="Open roadmap" />
         )}
+
+        <DailyBrief />
 
         <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
           <Card className="p-3 sm:p-4">
