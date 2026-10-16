@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo_Black, Work_Sans } from "next/font/google";
 import { PrimaryNav } from "@/components/nav";
+import { InstallPrompt, PwaRegister } from "@/components/pwa";
 import { ThemeSync, ThemeToggle } from "@/components/theme-sync";
 import { getPrefs } from "@/lib/store";
 import "./globals.css";
@@ -11,6 +12,32 @@ const archivoBlack = Archivo_Black({ variable: "--font-archivo", subsets: ["lati
 export const metadata: Metadata = {
   title: "StudyOS AI",
   description: "Personal software engineering study companion",
+  applicationName: "StudyOS",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "StudyOS",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFD23F" },
+    { media: "(prefers-color-scheme: dark)", color: "#121211" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export const dynamic = "force-dynamic";
@@ -27,6 +54,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full bg-canvas font-sans text-ink">
+        <PwaRegister />
         <ThemeSync theme={prefs.theme} />
         <PrimaryNav theme={prefs.theme} />
         <div className="min-h-full md:pl-60">
@@ -38,6 +66,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </header>
           <div className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 md:px-12 md:pb-12 md:pt-10">{children}</div>
         </div>
+        <InstallPrompt />
       </body>
     </html>
   );

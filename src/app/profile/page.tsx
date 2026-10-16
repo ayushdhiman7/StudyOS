@@ -90,6 +90,12 @@ export default async function ProfilePage() {
         <div className="mt-4"><ImportForm /></div>
       </Card>
       <Card>
+        <h2 className="font-semibold">Install app (PWA)</h2>
+        <p className="mt-2 text-sm text-muted">
+          StudyOS is a Progressive Web App. On Chrome/Edge, use Install when prompted, or the browser menu. On iPhone, use Share → Add to Home Screen. Offline, you will see a simple offline page; roadmap and AI still need a network.
+        </p>
+      </Card>
+      <Card>
         <h2 className="font-semibold">Privacy</h2>
         <p className="mt-2 text-sm text-muted">Notes and chats stay in your MongoDB database. They are sent to Gemini only when you ask a question, attach notes, or generate a quiz or note. Server logs record status codes, not full conversations or secrets.</p>
       </Card>
