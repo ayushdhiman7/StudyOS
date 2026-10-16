@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --canvas: #f4f4ee;
+  --card: #ffffff;
+  --ink: #111111;
+  --muted: #55555a;
+  --line: #111111;
+  --track: #e6e6e0;
+  --yellow: #ffd23f;
+  --on-yellow: #111111;
+  --coral: #ff5a36;
+  --mint: #7ee0b5;
+  --navy: #111111;
+  --teal: #ff5a36;
+  --teal-ink: #111111;
+  --shadow: 3px 3px 0 #111111;
+  --shadow-lg: 4px 4px 0 #111111;
+}
+
+.dark {
+  color-scheme: dark;
+  --canvas: #121211;
+  --card: #1c1c1a;
+  --ink: #f4f4ee;
+  --muted: #a8a8a0;
+  --line: #3a3a36;
+  --track: #33332f;
+  --yellow: #ffd23f;
+  --on-yellow: #111111;
+  --coral: #ff5a36;
+  --mint: #7ee0b5;
+  --navy: #111111;
+  --teal: #ffd23f;
+  --teal-ink: #111111;
+  --shadow: 3px 3px 0 #111111;
+  --shadow-lg: 4px 4px 0 #111111;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-track: var(--track);
+  --color-yellow: var(--yellow);
+  --color-on-yellow: var(--on-yellow);
+  --color-coral: var(--coral);
+  --color-mint: var(--mint);
+  --color-navy: var(--navy);
+  --color-teal: var(--teal);
+  --color-teal-ink: var(--teal-ink);
+  --font-sans: var(--font-work);
+  --font-display: var(--font-archivo);
+  --font-mono: var(--font-work);
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-work), "Work Sans", sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-archivo), "Archivo Black", sans-serif;
+  font-weight: 400;
+}
+
+/* Yellow surfaces always use black text/icons in light and dark mode. */
+.bg-yellow,
+.bg-yellow * {
+  color: #111111 !important;
+}
+
+.bg-yellow svg {
+  color: #111111 !important;
+  stroke: #111111 !important;
+}
+
+.hard-shadow {
+  box-shadow: var(--shadow);
+}
+
+.hard-shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.skeleton {
+  animation: pulse 1.4s ease-in-out infinite;
+  background: color-mix(in srgb, var(--track) 80%, transparent);
+  border-radius: 0.75rem;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.55; }
+}

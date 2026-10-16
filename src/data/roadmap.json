@@ -1,0 +1,1251 @@
+{
+  "count": 30,
+  "days": [
+    {
+      "id": "day-2026-10-17",
+      "date": "2026-10-17",
+      "weekday": "Saturday",
+      "weekId": "week-1",
+      "weekTitle": "Week 1: HTML, CSS, JavaScript foundations",
+      "title": "HTML",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Document foundation",
+          "concepts": [
+            "What HTML is and how browsers render a page",
+            "HTML boilerplate: doctype, html, head, body, charset and viewport",
+            "Elements, tags, attributes, nesting and comments",
+            "Headings, paragraphs, line breaks, horizontal rules and text emphasis"
+          ]
+        },
+        {
+          "title": "Content and navigation",
+          "concepts": [
+            "Absolute vs relative URLs; anchor links and target behavior",
+            "Images: src, alt text, width/height and accessible descriptions",
+            "Ordered/unordered/description lists; table structure, caption, thead, tbody, th and td",
+            "Semantic elements: header, nav, main, section, article, aside and footer"
+          ]
+        },
+        {
+          "title": "Forms and quality",
+          "concepts": [
+            "form, label, input, textarea, select, option, button and fieldset",
+            "Input types, required, min/max, minlength/maxlength, pattern and autocomplete",
+            "Basic accessibility: labels, meaningful link text, heading hierarchy and keyboard use",
+            "SEO metadata: title, description, favicon and semantic structure"
+          ]
+        }
+      ],
+      "practice": [
+        "Build a one-page portfolio with About, Skills, Projects and Contact sections",
+        "Add a working form layout, labels, alt text and semantic page structure",
+        "Explain semantic HTML vs generic divs and why alt text matters"
+      ]
+    },
+    {
+      "id": "day-2026-10-18",
+      "date": "2026-10-18",
+      "weekday": "Sunday",
+      "weekId": "week-1",
+      "weekTitle": "Week 1: HTML, CSS, JavaScript foundations",
+      "title": "CSS",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Core CSS",
+          "concepts": [
+            "Ways to add CSS: external, internal and inline; why external is preferred",
+            "Selectors: element, class, ID, attribute, descendant, child and grouping",
+            "Cascade, specificity, inheritance and source order",
+            "Colors, typography, fonts, line-height, borders, backgrounds and units"
+          ]
+        },
+        {
+          "title": "Layout",
+          "concepts": [
+            "Box model: content, padding, border and margin; box-sizing",
+            "display values: block, inline, inline-block, flex, grid and none",
+            "Position: static, relative, absolute, fixed and sticky; z-index and stacking context basics",
+            "Flexbox: main/cross axis, justify-content, align-items, gap, wrap and order",
+            "Grid: tracks, fr units, repeat, minmax, grid-template and gap"
+          ]
+        },
+        {
+          "title": "Responsive styling",
+          "concepts": [
+            "Media queries and mobile-first layout",
+            "Responsive units: %, rem, em, vw/vh and max-width",
+            "Pseudo-classes and pseudo-elements; focus states",
+            "Transitions, hover states and basic motion accessibility"
+          ]
+        }
+      ],
+      "practice": [
+        "Style the HTML portfolio at mobile, tablet and desktop widths",
+        "Create a card grid and a responsive navigation section",
+        "Explain specificity, box-sizing, Flexbox vs Grid and relative vs absolute positioning"
+      ]
+    },
+    {
+      "id": "day-2026-10-19",
+      "date": "2026-10-19",
+      "weekday": "Monday",
+      "weekId": "week-1",
+      "weekTitle": "Week 1: HTML, CSS, JavaScript foundations",
+      "title": "JavaScript fundamentals",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Language basics",
+          "concepts": [
+            "What JavaScript does in the browser and on the server",
+            "var vs let vs const; declaration, initialization and reassignment",
+            "Primitive types: string, number, bigint, boolean, undefined, null and symbol",
+            "typeof quirks, explicit/implicit conversion, Number(), String(), Boolean()"
+          ]
+        },
+        {
+          "title": "Control flow and functions",
+          "concepts": [
+            "Arithmetic, comparison, logical, nullish-coalescing and ternary operators",
+            "if/else, switch, for, while, do/while, break and continue",
+            "Function declaration, expression, arrow function, parameters and return",
+            "Default parameters, scope basics and early returns"
+          ]
+        }
+      ],
+      "practice": [
+        "Write programs for even/odd, largest of three, factorial, multiplication table and FizzBuzz",
+        "Trace a loop manually and explain the difference between == and ===",
+        "Notes: data types, coercion, functions and loop patterns"
+      ]
+    },
+    {
+      "id": "day-2026-10-20",
+      "date": "2026-10-20",
+      "weekday": "Tuesday",
+      "weekId": "week-1",
+      "weekTitle": "Week 1: HTML, CSS, JavaScript foundations",
+      "title": "Arrays and objects",
+      "targetLabel": "5\u20136 hours (holiday)",
+      "targetMinutes": 330,
+      "holiday": true,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Arrays",
+          "concepts": [
+            "Create, read, update and delete array elements; index and length",
+            "Mutating vs non-mutating methods: push/pop/splice vs slice/concat",
+            "Iteration: for, for...of, forEach and when to use each",
+            "map, filter, reduce, find, findIndex, some, every, includes and sort"
+          ]
+        },
+        {
+          "title": "Objects and modern syntax",
+          "concepts": [
+            "Object literals, property access, computed keys and object iteration",
+            "Object.keys/values/entries; hasOwn and property existence",
+            "Destructuring, spread, rest parameters and shallow-copy limitations",
+            "Optional chaining, nullish coalescing, template literals and shorthand properties",
+            "Set for uniqueness; Map for key-value collections"
+          ]
+        },
+        {
+          "title": "Problem-solving",
+          "concepts": [
+            "Frequency counter with an object or Map",
+            "Remove duplicates using Set; flatten or transform arrays",
+            "Sort numbers correctly with a numeric comparator",
+            "Understand references, shallow copies and nested object mutation"
+          ]
+        }
+      ],
+      "practice": [
+        "Solve 8\u201310 array/object exercises and write the approach before coding",
+        "For each solution, include an example, edge case and complexity estimate",
+        "Explain map vs forEach, filter vs find, and Set vs array"
+      ]
+    },
+    {
+      "id": "day-2026-10-21",
+      "date": "2026-10-21",
+      "weekday": "Wednesday",
+      "weekId": "week-1",
+      "weekTitle": "Week 1: HTML, CSS, JavaScript foundations",
+      "title": "JavaScript internals",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Execution model",
+          "concepts": [
+            "Global execution context and function execution context",
+            "Call stack, stack frames and synchronous execution",
+            "Lexical environment and scope chain",
+            "Hoisting behavior for var, let, const and function declarations"
+          ]
+        },
+        {
+          "title": "Closures and this",
+          "concepts": [
+            "Temporal dead zone and ReferenceError cases",
+            "Closure definition, lexical capture and practical use cases",
+            "this in regular functions, methods, arrow functions and event callbacks",
+            "call, apply and bind; when binding is useful",
+            "Primitive values vs object references; mutation and copying"
+          ]
+        }
+      ],
+      "practice": [
+        "Predict outputs for 5 snippets involving hoisting, closures and this",
+        "Implement a counter closure and a function using bind",
+        "Explain why closures can retain variables and when that can cause memory concerns"
+      ]
+    },
+    {
+      "id": "day-2026-10-22",
+      "date": "2026-10-22",
+      "weekday": "Thursday",
+      "weekId": "week-1",
+      "weekTitle": "Week 1: HTML, CSS, JavaScript foundations",
+      "title": "Asynchronous JavaScript",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Async concepts",
+          "concepts": [
+            "Synchronous vs asynchronous execution; blocking vs non-blocking",
+            "Callbacks and callback nesting",
+            "Promise states, resolve/reject, then/catch/finally",
+            "async functions, await and try/catch"
+          ]
+        },
+        {
+          "title": "Event loop",
+          "concepts": [
+            "Call stack, Web APIs/runtime APIs and task queues",
+            "Microtasks vs macrotasks/tasks; promise callbacks vs timers",
+            "setTimeout timing is a minimum delay, not an exact execution time",
+            "Promise.all, allSettled, race and any; failure behavior"
+          ]
+        },
+        {
+          "title": "Network practice",
+          "concepts": [
+            "fetch request/response and checking response.ok",
+            "JSON parsing, loading/error state and network failures",
+            "Sequential vs parallel asynchronous operations"
+          ]
+        }
+      ],
+      "practice": [
+        "Draw event-loop ordering for a short snippet",
+        "Fetch data from a public/test endpoint or mock a promise",
+        "Explain Promise.all vs allSettled and why await needs error handling"
+      ]
+    },
+    {
+      "id": "day-2026-10-23",
+      "date": "2026-10-23",
+      "weekday": "Friday",
+      "weekId": "week-1",
+      "weekTitle": "Week 1: HTML, CSS, JavaScript foundations",
+      "title": "DOM, browser APIs and revision",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "DOM",
+          "concepts": [
+            "DOM tree; querySelector/querySelectorAll and element selection",
+            "textContent vs innerHTML; createElement, append and remove",
+            "addEventListener, event object and preventDefault",
+            "Bubbling, capturing, delegation and event.target vs currentTarget"
+          ]
+        },
+        {
+          "title": "Browser storage and modules",
+          "concepts": [
+            "localStorage vs sessionStorage vs cookies; do not store sensitive tokens carelessly",
+            "JSON.stringify and JSON.parse",
+            "ES modules: export, named/default export and import",
+            "Browser devtools, breakpoints, console and network tab"
+          ]
+        }
+      ],
+      "practice": [
+        "Build a task list with add, complete and delete behavior",
+        "Save non-sensitive task data in localStorage",
+        "Weekly quiz: HTML/CSS, JS types, closures, async/event loop and DOM"
+      ]
+    },
+    {
+      "id": "day-2026-10-24",
+      "date": "2026-10-24",
+      "weekday": "Saturday",
+      "weekId": "week-2",
+      "weekTitle": "Week 2: TypeScript, React, Redux Toolkit, Node.js, Express",
+      "title": "TypeScript",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Type system",
+          "concepts": [
+            "Why TypeScript; compile-time checking vs runtime validation",
+            "Primitive types, arrays, tuples, object shapes and literal types",
+            "type aliases vs interfaces; optional and readonly properties",
+            "Union/intersection types, enums overview and discriminated unions"
+          ]
+        },
+        {
+          "title": "Safer typing",
+          "concepts": [
+            "Function parameter and return types",
+            "Type narrowing with typeof, in, instanceof and custom type guards",
+            "any vs unknown vs never; null/undefined and strictNullChecks",
+            "Generics for reusable functions, interfaces and API helpers",
+            "Utility types: Partial, Pick, Omit, Record, Required and Readonly"
+          ]
+        },
+        {
+          "title": "Project integration",
+          "concepts": [
+            "Typing React props and event handlers",
+            "Typing API response data and optional fields",
+            "tsconfig basics and strict mode"
+          ]
+        }
+      ],
+      "practice": [
+        "Convert the task-list model and helper functions to TypeScript",
+        "Create a generic function and a discriminated union",
+        "Explain interface vs type, any vs unknown and compile-time vs runtime validation"
+      ]
+    },
+    {
+      "id": "day-2026-10-25",
+      "date": "2026-10-25",
+      "weekday": "Sunday",
+      "weekId": "week-2",
+      "weekTitle": "Week 2: TypeScript, React, Redux Toolkit, Node.js, Express",
+      "title": "React fundamentals",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "React model",
+          "concepts": [
+            "SPA concept, React rendering and component tree",
+            "JSX syntax, expressions, fragments and conditional rendering",
+            "Functional components, props, default values and composition",
+            "State with useState; state updates and render behavior"
+          ]
+        },
+        {
+          "title": "Lists and forms",
+          "concepts": [
+            "Rendering arrays, stable keys and why array index can be risky",
+            "Controlled inputs, form submit, validation and error messages",
+            "Lifting state up and one-way data flow",
+            "State immutability; updating arrays and objects correctly"
+          ]
+        },
+        {
+          "title": "Component design",
+          "concepts": [
+            "Reusable components and children prop",
+            "Presentational vs stateful responsibilities",
+            "Empty, loading, success and error states"
+          ]
+        }
+      ],
+      "practice": [
+        "Build a React CRUD task manager with add/edit/delete/complete",
+        "Split it into App, TaskForm, TaskList and TaskItem",
+        "Explain props vs state, controlled inputs and why keys matter"
+      ]
+    },
+    {
+      "id": "day-2026-10-26",
+      "date": "2026-10-26",
+      "weekday": "Monday",
+      "weekId": "week-2",
+      "weekTitle": "Week 2: TypeScript, React, Redux Toolkit, Node.js, Express",
+      "title": "React hooks",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Core hooks",
+          "concepts": [
+            "useState functional updates and batching basics",
+            "useEffect for synchronizing with external systems; dependency array",
+            "Effect cleanup for subscriptions, timers and requests",
+            "useRef for mutable values and DOM references"
+          ]
+        },
+        {
+          "title": "Performance and reuse",
+          "concepts": [
+            "useMemo caches a computed value; avoid unnecessary memoization",
+            "useCallback caches a function reference; dependencies matter",
+            "Custom hooks for reusable stateful logic",
+            "Rules of Hooks and common stale-closure mistakes"
+          ]
+        }
+      ],
+      "practice": [
+        "Build a search/filter component and a cleanup-based timer/subscription example",
+        "Explain useEffect vs useMemo with one practical example each",
+        "Identify when an effect is unnecessary and derived state can be calculated during render"
+      ]
+    },
+    {
+      "id": "day-2026-10-27",
+      "date": "2026-10-27",
+      "weekday": "Tuesday",
+      "weekId": "week-2",
+      "weekTitle": "Week 2: TypeScript, React, Redux Toolkit, Node.js, Express",
+      "title": "Redux Toolkit",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Redux flow",
+          "concepts": [
+            "Why shared state; store, action, reducer, dispatch and selector",
+            "Redux data flow and predictable updates",
+            "configureStore, createSlice and generated action creators",
+            "useSelector and useDispatch"
+          ]
+        },
+        {
+          "title": "Async and organization",
+          "concepts": [
+            "createAsyncThunk pending/fulfilled/rejected states",
+            "Loading, success and error state patterns",
+            "Normalized state overview and selectors",
+            "Context API vs Redux; local state vs global state",
+            "RTK Query overview: caching, query and mutation concepts"
+          ]
+        }
+      ],
+      "practice": [
+        "Implement cart or task state with createSlice",
+        "Add one asynchronous thunk with loading/error states",
+        "Explain Redux Toolkit vs classic Redux and when global state is justified"
+      ]
+    },
+    {
+      "id": "day-2026-10-28",
+      "date": "2026-10-28",
+      "weekday": "Wednesday",
+      "weekId": "week-2",
+      "weekTitle": "Week 2: TypeScript, React, Redux Toolkit, Node.js, Express",
+      "title": "React application engineering",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Navigation and APIs",
+          "concepts": [
+            "React Router routes, nested routes, params and navigation",
+            "Protected-route UI patterns and authorization must also be enforced on the server",
+            "API requests, loading/error states, pagination and search",
+            "Environment variables and frontend configuration"
+          ]
+        },
+        {
+          "title": "Quality",
+          "concepts": [
+            "Component boundaries and folder organization",
+            "Basic accessibility and semantic UI",
+            "Avoiding unnecessary rerenders; React DevTools overview",
+            "Frontend security basics: XSS awareness and safe rendering"
+          ]
+        }
+      ],
+      "practice": [
+        "Build dashboard pages with list/detail routes and mock API data",
+        "Add loading, empty and error states",
+        "Write a short frontend architecture note"
+      ]
+    },
+    {
+      "id": "day-2026-10-29",
+      "date": "2026-10-29",
+      "weekday": "Thursday",
+      "weekId": "week-2",
+      "weekTitle": "Week 2: TypeScript, React, Redux Toolkit, Node.js, Express",
+      "title": "Node.js fundamentals",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Runtime",
+          "concepts": [
+            "What Node.js is; V8 and JavaScript execution",
+            "libuv role in asynchronous I/O and event-loop orchestration",
+            "Call stack, event-loop phases at a high level and thread-pool overview",
+            "CPU-bound vs I/O-bound work; why blocking hurts throughput"
+          ]
+        },
+        {
+          "title": "Modules and runtime APIs",
+          "concepts": [
+            "CommonJS require/module.exports vs ES modules import/export",
+            "npm, package.json, scripts, dependencies and semantic versioning basics",
+            "process.env and configuration",
+            "fs, path and streams overview; buffers basics",
+            "Error-first callbacks and promise-based APIs"
+          ]
+        }
+      ],
+      "practice": [
+        "Create a Node HTTP server or minimal CLI utility",
+        "Explain what happens when many requests arrive at once",
+        "Compare blocking and non-blocking file operations"
+      ]
+    },
+    {
+      "id": "day-2026-10-30",
+      "date": "2026-10-30",
+      "weekday": "Friday",
+      "weekId": "week-2",
+      "weekTitle": "Week 2: TypeScript, React, Redux Toolkit, Node.js, Express",
+      "title": "Express and REST API design",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Express request lifecycle",
+          "concepts": [
+            "Create app, listen, routes and route parameters",
+            "Middleware order, next(), request/response objects",
+            "Controllers vs service layer",
+            "Central error middleware and async error propagation"
+          ]
+        },
+        {
+          "title": "REST and HTTP",
+          "concepts": [
+            "GET, POST, PUT, PATCH and DELETE semantics",
+            "2xx, 3xx, 4xx and 5xx status-code families; common codes",
+            "Headers, query params, path params and request body",
+            "REST resource naming, idempotency and safe methods",
+            "Validation, pagination, filtering, sorting and API versioning"
+          ]
+        },
+        {
+          "title": "API documentation",
+          "concepts": [
+            "Postman environments and collections",
+            "OpenAPI/Swagger purpose",
+            "Consistent success and error response shapes"
+          ]
+        }
+      ],
+      "practice": [
+        "Build CRUD endpoints for tasks/products and test each endpoint",
+        "Add validation, 404 handling and centralized errors",
+        "Document the API and status codes in notes"
+      ]
+    },
+    {
+      "id": "day-2026-10-31",
+      "date": "2026-10-31",
+      "weekday": "Saturday",
+      "weekId": "week-3",
+      "weekTitle": "Week 3: Authentication, SQL, MongoDB, Redis, BullMQ, Socket.IO, backend architecture",
+      "title": "Authentication and API security",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Identity and tokens",
+          "concepts": [
+            "Authentication vs authorization; identity vs permissions",
+            "Session-based auth vs token-based auth",
+            "JWT structure: header, payload, signature; signed tokens are not automatically encrypted",
+            "Access-token expiry, refresh-token rotation, revocation and reuse detection"
+          ]
+        },
+        {
+          "title": "Passwords and browser security",
+          "concepts": [
+            "Password hashing with bcrypt/Argon2; never store plain-text passwords",
+            "httpOnly, Secure and SameSite cookie flags",
+            "CSRF and XSS basics; CORS is not an authentication mechanism",
+            "Secure password reset and email-verification flow concepts"
+          ]
+        },
+        {
+          "title": "Authorization and hardening",
+          "concepts": [
+            "RBAC roles and permissions; least privilege",
+            "Rate limiting, brute-force protection and request validation",
+            "Secrets in environment/secret managers; avoid committing secrets",
+            "SQL injection and parameterized queries; dependency updates"
+          ]
+        }
+      ],
+      "practice": [
+        "Implement login, protected route and role check in a practice API",
+        "Write a threat checklist for authentication",
+        "Explain JWT vs sessions, 401 vs 403 and CORS vs CSRF"
+      ]
+    },
+    {
+      "id": "day-2026-11-01",
+      "date": "2026-11-01",
+      "weekday": "Sunday",
+      "weekId": "week-3",
+      "weekTitle": "Week 3: Authentication, SQL, MongoDB, Redis, BullMQ, Socket.IO, backend architecture",
+      "title": "SQL and MySQL",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Query fundamentals",
+          "concepts": [
+            "SELECT, WHERE, ORDER BY, LIMIT, DISTINCT and aliases",
+            "INSERT, UPDATE, DELETE and safe update habits",
+            "Aggregate functions, GROUP BY and HAVING",
+            "INNER, LEFT, RIGHT joins; self-join overview"
+          ]
+        },
+        {
+          "title": "Query depth",
+          "concepts": [
+            "Subqueries, correlated subqueries and CTEs",
+            "CASE expressions, NULL behavior and COALESCE",
+            "Primary/foreign keys, unique constraints and relationships",
+            "Normalization: 1NF, 2NF, 3NF and practical trade-offs"
+          ]
+        },
+        {
+          "title": "Performance and transactions",
+          "concepts": [
+            "Indexes: B-tree concept, selectivity and composite index order",
+            "EXPLAIN/query plan and spotting full table scans",
+            "ACID properties, commit/rollback and transaction boundaries",
+            "Isolation levels, dirty/non-repeatable/phantom reads overview",
+            "Offset vs cursor pagination overview"
+          ]
+        }
+      ],
+      "practice": [
+        "Solve 10 SQL questions from beginner to joins/aggregates",
+        "Design users, stores, products and orders tables",
+        "Explain why too many indexes can slow writes and how a transaction helps"
+      ]
+    },
+    {
+      "id": "day-2026-11-02",
+      "date": "2026-11-02",
+      "weekday": "Monday",
+      "weekId": "week-3",
+      "weekTitle": "Week 3: Authentication, SQL, MongoDB, Redis, BullMQ, Socket.IO, backend architecture",
+      "title": "MongoDB",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Data model",
+          "concepts": [
+            "Database, collection, document and BSON",
+            "CRUD methods and query filters",
+            "Embedding vs referencing based on access patterns and document growth",
+            "Schema validation and ObjectId basics"
+          ]
+        },
+        {
+          "title": "Querying and performance",
+          "concepts": [
+            "Projection, sort, limit and pagination",
+            "Indexes: single-field, compound, unique and multikey concepts",
+            "Aggregation pipeline: $match, $project, $group, $sort and $lookup",
+            "Atomic document updates and concurrency considerations"
+          ]
+        }
+      ],
+      "practice": [
+        "Write five aggregation/query exercises",
+        "Model orders and order items; justify embed vs reference",
+        "Compare relational joins with MongoDB aggregation and reference-based reads"
+      ]
+    },
+    {
+      "id": "day-2026-11-03",
+      "date": "2026-11-03",
+      "weekday": "Tuesday",
+      "weekId": "week-3",
+      "weekTitle": "Week 3: Authentication, SQL, MongoDB, Redis, BullMQ, Socket.IO, backend architecture",
+      "title": "Redis and caching",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Redis basics",
+          "concepts": [
+            "In-memory key-value store and common use cases",
+            "Strings, hashes, lists, sets and sorted sets overview",
+            "TTL/expiry and cache key naming",
+            "Cache-aside read flow and write/invalidation strategy"
+          ]
+        },
+        {
+          "title": "Production concerns",
+          "concepts": [
+            "Cache hit/miss, stale data and invalidation",
+            "Cache stampede and mitigation strategies",
+            "Rate limiting counters and session storage",
+            "Distributed locks overview and why lock expiry/failure matters",
+            "Cache is not the source of truth unless deliberately designed that way"
+          ]
+        }
+      ],
+      "practice": [
+        "Cache a frequently read API response with TTL",
+        "Document invalidation when the underlying record changes",
+        "Explain cache-aside vs reading directly from the database"
+      ]
+    },
+    {
+      "id": "day-2026-11-04",
+      "date": "2026-11-04",
+      "weekday": "Wednesday",
+      "weekId": "week-3",
+      "weekTitle": "Week 3: Authentication, SQL, MongoDB, Redis, BullMQ, Socket.IO, backend architecture",
+      "title": "BullMQ and background jobs",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Queue model",
+          "concepts": [
+            "Producer, queue, worker and job lifecycle",
+            "Why background work improves request latency",
+            "BullMQ job options, attempts, backoff and delayed jobs",
+            "Concurrency and worker scaling"
+          ]
+        },
+        {
+          "title": "Reliability",
+          "concepts": [
+            "Idempotency and safe retries",
+            "Duplicate job prevention and deduplication concepts",
+            "Failed jobs, dead-letter/retry strategy and observability",
+            "Scheduled/repeatable jobs and graceful shutdown",
+            "Queue job payload design and avoiding secrets/personal data"
+          ]
+        }
+      ],
+      "practice": [
+        "Queue an order-confirmation or report-generation job",
+        "Simulate a failure and retry with backoff",
+        "Explain why retries require idempotent job handlers"
+      ]
+    },
+    {
+      "id": "day-2026-11-05",
+      "date": "2026-11-05",
+      "weekday": "Thursday",
+      "weekId": "week-3",
+      "weekTitle": "Week 3: Authentication, SQL, MongoDB, Redis, BullMQ, Socket.IO, backend architecture",
+      "title": "Socket.IO and real-time systems",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Connection model",
+          "concepts": [
+            "Polling vs WebSockets vs Server-Sent Events",
+            "Socket.IO vs raw WebSocket; transport and reconnection concepts",
+            "Events, acknowledgements, rooms and namespaces",
+            "Authentication during connection and validating event payloads"
+          ]
+        },
+        {
+          "title": "Scaling and reliability",
+          "concepts": [
+            "Presence and room membership",
+            "Delivery guarantees, acknowledgements and duplicate handling",
+            "Redis adapter concept for multiple server instances",
+            "Authorization for room joins and tenant-scoped events",
+            "Connection cleanup, reconnect and missed-event strategy"
+          ]
+        }
+      ],
+      "practice": [
+        "Build a small chat or notification flow with rooms",
+        "Describe how to scale beyond one server process",
+        "Explain WebSocket vs polling and why socket events need authorization"
+      ]
+    },
+    {
+      "id": "day-2026-11-06",
+      "date": "2026-11-06",
+      "weekday": "Friday",
+      "weekId": "week-3",
+      "weekTitle": "Week 3: Authentication, SQL, MongoDB, Redis, BullMQ, Socket.IO, backend architecture",
+      "title": "Backend architecture and APIs",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Code organization",
+          "concepts": [
+            "Routes/controllers/services/repositories and separation of concerns",
+            "Dependency injection concepts and testability",
+            "Validation at boundaries and consistent error handling",
+            "Logging with request IDs and structured fields"
+          ]
+        },
+        {
+          "title": "Data and service boundaries",
+          "concepts": [
+            "Transactions across related changes",
+            "Monolith vs modular monolith vs microservices",
+            "Service-to-service communication and failure boundaries",
+            "Multi-tenant isolation: tenant context, scoped queries and authorization checks"
+          ]
+        }
+      ],
+      "practice": [
+        "Refactor practice CRUD API into route/controller/service/data layers",
+        "Draw request flow from HTTP route to database",
+        "Review database, Redis, queue and real-time notes"
+      ]
+    },
+    {
+      "id": "day-2026-11-07",
+      "date": "2026-11-07",
+      "weekday": "Saturday",
+      "weekId": "week-4",
+      "weekTitle": "Week 4: System design, Docker, Docker Compose, CI/CD, cloud deployment, testing",
+      "title": "System design foundations",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Requirements and estimates",
+          "concepts": [
+            "Clarify functional requirements, users and key use cases",
+            "Non-functional requirements: latency, availability, durability, consistency and security",
+            "Estimate requests/second, data volume, storage growth and bandwidth",
+            "Define assumptions and identify the likely bottleneck"
+          ]
+        },
+        {
+          "title": "Building blocks",
+          "concepts": [
+            "Client, DNS, CDN, load balancer, reverse proxy and application servers",
+            "Stateless vs stateful services; horizontal vs vertical scaling",
+            "Database selection and connection pooling",
+            "Caching, queues and background workers",
+            "Single points of failure and redundancy"
+          ]
+        },
+        {
+          "title": "Design exercise",
+          "concepts": [
+            "Design a URL shortener: create/redirect APIs, key generation and storage",
+            "Discuss collision handling, hot keys, analytics and read/write ratio",
+            "Draw high-level architecture and label request/data flows"
+          ]
+        }
+      ],
+      "practice": [
+        "Create one complete URL-shortener diagram",
+        "Present the design aloud in 10 minutes",
+        "Write trade-offs and likely bottlenecks"
+      ]
+    },
+    {
+      "id": "day-2026-11-08",
+      "date": "2026-11-08",
+      "weekday": "Sunday",
+      "weekId": "week-4",
+      "weekTitle": "Week 4: System design, Docker, Docker Compose, CI/CD, cloud deployment, testing",
+      "title": "Advanced system design",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Data and scale",
+          "concepts": [
+            "SQL vs NoSQL decision criteria",
+            "Replication, read replicas, partitioning and sharding",
+            "Consistency models and trade-offs; avoid assuming every system needs eventual consistency",
+            "CDN and multi-layer caching"
+          ]
+        },
+        {
+          "title": "Resilience",
+          "concepts": [
+            "Queues and asynchronous processing",
+            "Timeouts, retries with backoff, circuit breakers and bulkheads",
+            "Idempotency keys and duplicate request handling",
+            "Monitoring, metrics, logs, tracing and alerting basics"
+          ]
+        },
+        {
+          "title": "Resume-aligned design",
+          "concepts": [
+            "Design multi-tenant e-commerce: stores, catalog, cart, orders, payments and delivery",
+            "Tenant isolation in queries, caches, jobs and real-time events",
+            "Order processing with queue, retry, idempotency and status transitions",
+            "Discuss payment-provider failure, reconciliation and audit logs"
+          ]
+        }
+      ],
+      "practice": [
+        "Draw the multi-tenant e-commerce architecture",
+        "Explain the trade-offs behind SQL, Redis and a queue",
+        "Prepare a 5-minute walkthrough using your Bebang project as context"
+      ]
+    },
+    {
+      "id": "day-2026-11-09",
+      "date": "2026-11-09",
+      "weekday": "Monday",
+      "weekId": "week-4",
+      "weekTitle": "Week 4: System design, Docker, Docker Compose, CI/CD, cloud deployment, testing",
+      "title": "Docker",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Fundamentals",
+          "concepts": [
+            "Containers vs virtual machines; image vs running container",
+            "Dockerfile instructions: FROM, WORKDIR, COPY, RUN, ENV, EXPOSE and CMD/ENTRYPOINT",
+            "Build context, image layers and .dockerignore",
+            "Port publishing and container logs"
+          ]
+        },
+        {
+          "title": "Running safely",
+          "concepts": [
+            "Environment variables and config injection",
+            "Volumes vs bind mounts",
+            "Container networking and service names",
+            "Non-root user, small base images and production image hygiene",
+            "Health-check concepts and graceful shutdown"
+          ]
+        }
+      ],
+      "practice": [
+        "Dockerize the Node API",
+        "Build, run, inspect logs and troubleshoot a port/config issue",
+        "Explain image vs container, COPY vs volume and EXPOSE vs published port"
+      ]
+    },
+    {
+      "id": "day-2026-11-10",
+      "date": "2026-11-10",
+      "weekday": "Tuesday",
+      "weekId": "week-4",
+      "weekTitle": "Week 4: System design, Docker, Docker Compose, CI/CD, cloud deployment, testing",
+      "title": "Docker Compose",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Multi-service development",
+          "concepts": [
+            "Compose services, build, ports, environment and depends_on",
+            "Service-to-service DNS on the Compose network",
+            "Persistent database volumes and initialization",
+            "Health checks and startup readiness vs merely starting a container"
+          ]
+        },
+        {
+          "title": "Environment handling",
+          "concepts": [
+            "Separate development/test/production configuration",
+            ".env files and why secrets should not be committed",
+            "Database migrations and seed data",
+            "Logs, restart policies and debugging failed services"
+          ]
+        }
+      ],
+      "practice": [
+        "Run Node API + MySQL + Redis with Compose",
+        "Verify API-to-database and API-to-Redis connectivity",
+        "Document setup, startup, shutdown and troubleshooting commands"
+      ]
+    },
+    {
+      "id": "day-2026-11-11",
+      "date": "2026-11-11",
+      "weekday": "Wednesday",
+      "weekId": "week-4",
+      "weekTitle": "Week 4: System design, Docker, Docker Compose, CI/CD, cloud deployment, testing",
+      "title": "Git and CI/CD",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Git workflow",
+          "concepts": [
+            "Working tree, staging area, commits and branches",
+            "merge vs rebase; resolving conflicts",
+            "Pull requests, review and meaningful commit messages",
+            "Revert vs reset overview and safe collaboration habits"
+          ]
+        },
+        {
+          "title": "CI/CD concepts",
+          "concepts": [
+            "CI vs continuous delivery vs continuous deployment",
+            "Pipeline stages: install, lint, test, build and deploy",
+            "GitHub Actions workflow, jobs, steps, runners and triggers",
+            "Secrets, environment protection and artifact handling",
+            "Rollback and release verification"
+          ]
+        }
+      ],
+      "practice": [
+        "Create a workflow that installs dependencies and runs tests on push/PR",
+        "Document what should block a deployment",
+        "Explain the purpose of CI and how a failed pipeline is diagnosed"
+      ]
+    },
+    {
+      "id": "day-2026-11-12",
+      "date": "2026-11-12",
+      "weekday": "Thursday",
+      "weekId": "week-4",
+      "weekTitle": "Week 4: System design, Docker, Docker Compose, CI/CD, cloud deployment, testing",
+      "title": "Cloud, networking and deployment",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Networking basics",
+          "concepts": [
+            "DNS records and domain resolution",
+            "HTTP vs HTTPS, TLS certificates and ports",
+            "Reverse proxy, load balancer and forwarded headers",
+            "Firewall/security-group concepts and least-privilege access"
+          ]
+        },
+        {
+          "title": "Deployment architecture",
+          "concepts": [
+            "Frontend hosting vs API hosting vs managed database",
+            "Build-time vs runtime environment variables",
+            "Database migrations, backups and restore planning",
+            "Health endpoints, logs, metrics and alerting",
+            "Zero-downtime deployment and rollback concepts"
+          ]
+        }
+      ],
+      "practice": [
+        "Draw a production deployment diagram for frontend + API + DB + Redis",
+        "Write a deployment checklist and environment variable inventory",
+        "If time permits, deploy a small practice app using a familiar platform"
+      ]
+    },
+    {
+      "id": "day-2026-11-13",
+      "date": "2026-11-13",
+      "weekday": "Friday",
+      "weekId": "week-4",
+      "weekTitle": "Week 4: System design, Docker, Docker Compose, CI/CD, cloud deployment, testing",
+      "title": "Testing and production readiness",
+      "targetLabel": "2 hours",
+      "targetMinutes": 120,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Test types",
+          "concepts": [
+            "Unit tests for isolated functions/services",
+            "Integration tests for API + database or queue",
+            "End-to-end tests for complete user flows",
+            "Test pyramid and choosing meaningful coverage"
+          ]
+        },
+        {
+          "title": "API test design",
+          "concepts": [
+            "Arrange/Act/Assert and descriptive test names",
+            "Mock vs real dependency; test isolation and test data cleanup",
+            "Supertest-style HTTP tests and Jest/Vitest concepts",
+            "Success, validation error, unauthorized, forbidden, not found and server-error cases"
+          ]
+        },
+        {
+          "title": "Operational readiness",
+          "concepts": [
+            "Structured logs, request IDs and redacting sensitive data",
+            "Health checks, metrics and alerting basics",
+            "Dependency/security checks and production debugging"
+          ]
+        }
+      ],
+      "practice": [
+        "Write API tests for CRUD, validation and auth",
+        "Run tests from the CI pipeline",
+        "List production-readiness gaps in your practice app"
+      ]
+    },
+    {
+      "id": "day-2026-11-14",
+      "date": "2026-11-14",
+      "weekday": "Saturday",
+      "weekId": "final-weekend",
+      "weekTitle": "Final weekend: DSA and mock interviews",
+      "title": "DSA and coding interview",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Complexity and arrays",
+          "concepts": [
+            "Big-O time and space; best/average/worst case",
+            "Arrays and strings; traversal and in-place operations",
+            "Hash maps/sets and frequency counting",
+            "Two pointers and sliding-window patterns"
+          ]
+        },
+        {
+          "title": "Core data structures",
+          "concepts": [
+            "Stack and queue use cases",
+            "Linked-list basics and pointer manipulation",
+            "Binary search and sorted-array reasoning",
+            "Recursion, base cases and call-stack behavior"
+          ]
+        },
+        {
+          "title": "Interview practice",
+          "concepts": [
+            "Solve 8\u201310 easy/medium problems; explain before coding",
+            "Test empty input, duplicates, negative values and boundary cases",
+            "State time and space complexity after each solution",
+            "Review failed attempts and write a reusable pattern note"
+          ]
+        }
+      ],
+      "practice": [
+        "Create a DSA sheet: pattern, trigger, template and pitfalls",
+        "Complete at least one timed coding session",
+        "Prioritize correctness and clear communication over speed"
+      ]
+    },
+    {
+      "id": "day-2026-11-15",
+      "date": "2026-11-15",
+      "weekday": "Sunday",
+      "weekId": "final-weekend",
+      "weekTitle": "Final weekend: DSA and mock interviews",
+      "title": "Final revision and mock interview",
+      "targetLabel": "5\u20137 hours",
+      "targetMinutes": 360,
+      "holiday": false,
+      "doneWhen": "You can explain the concepts without reading and complete the practical task.",
+      "blocks": [
+        {
+          "title": "Technical revision",
+          "concepts": [
+            "JavaScript: closures, this, promises, event loop and array methods",
+            "React: state, effects, memoization and Redux Toolkit",
+            "Node/Express: middleware, REST, async errors and auth",
+            "SQL/MongoDB: joins, indexes, transactions and data modeling",
+            "Redis/queues/Socket.IO: caching, retries, idempotency and scaling"
+          ]
+        },
+        {
+          "title": "Resume project discussion",
+          "concepts": [
+            "Bebang: multi-tenancy, 52 storefronts, payment/delivery integrations and POS order sync",
+            "Flow: real-time collaboration, Socket.IO, JWT refresh flow and workspace RBAC",
+            "For each project: problem, architecture, your contribution, trade-offs, bug and outcome"
+          ]
+        },
+        {
+          "title": "Mock interview",
+          "concepts": [
+            "2 coding questions with complexity analysis",
+            "5 JavaScript/React questions",
+            "5 backend/database/security questions",
+            "One system design prompt and architecture walkthrough",
+            "Prepare a 60\u201390 second introduction and thoughtful questions for interviewer"
+          ]
+        }
+      ],
+      "practice": [
+        "Write a final weak-topic list and plan the next 2\u20134 weeks",
+        "Ensure every resume claim can be explained with a concrete example",
+        "Do not claim mastery for topics you have only skimmed"
+      ]
+    }
+  ]
+}
